@@ -6,7 +6,7 @@ class AssignMatches extends Component {
   constructor() {
     super();
     this.state = {
-      cast: []
+      cast: [],
     };
   }
 
@@ -20,11 +20,11 @@ class AssignMatches extends Component {
     const cast = this.state.cast.slice();
     cast[target.name].matchId = target.value;
     this.setState({
-      cast: cast
+      cast: cast,
     });
   };
 
-  handleSubmit = evt => {
+  handleSubmit = (evt) => {
     evt.preventDefault();
     this.props.updateMatches(this.state.cast);
   };
@@ -52,7 +52,7 @@ class AssignMatches extends Component {
                       <option value={null}>Select a perfect match</option>
                       {matches.length &&
                         matches.map(
-                          match =>
+                          (match) =>
                             match.id !== member.id && (
                               <option value={match.id} key={match.name}>
                                 {match.name}
@@ -73,19 +73,16 @@ class AssignMatches extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    cast: state.cast
+    cast: state.cast,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    updateMatches: cast => dispatch(updateMatchesThunk(cast))
+    updateMatches: (cast) => dispatch(updateMatchesThunk(cast)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AssignMatches);
+export default connect(mapStateToProps, mapDispatchToProps)(AssignMatches);
