@@ -69,7 +69,9 @@ const truthBooth = (state = {}, action) => {
 //thunks
 export const getCastThunk = () => {
   return (dispatch) => {
-    axios.get('/api/cast').then(({ data }) => dispatch(getCastAction(data)));
+    axios.get('/api/cast').then(({ data }) => {
+      dispatch(getCastAction(data));
+    });
   };
 };
 

@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 
 require('../routes/castRoutes')(app);
 require('../routes/ceremonyRoutes')(app);
+require('../routes/truthBoothRoutes')(app);
 
 app.get('/app.js', (req, res, next) =>
   res.sendFile(path.join(__dirname, '..', 'dist', 'main.js'))

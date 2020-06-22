@@ -14,11 +14,15 @@ const shuffle = (array) => {
 };
 
 const findRemaining = (arr1, arr2) => {
-  const paired = arr2.reduce((acc, val) => {
-    acc.push(val.pair1.id);
-    acc.push(val.pair2.id);
-    return acc;
-  }, []);
+  let paired;
+
+  if (arr2.length > 0) {
+    paired = arr2.reduce((acc, val) => {
+      acc.push(val.pair1.id);
+      acc.push(val.pair2.id);
+      return acc;
+    }, []);
+  }
 
   return arr1.filter((item) => paired.indexOf(item.id) === -1);
 };
@@ -92,9 +96,11 @@ class SingleCeremony extends Component {
 
   render() {
     const { cast, pairs } = this.props;
-    const remaining = findRemaining(cast, pairs);
+    let remaining;
 
-    console.log(cast);
+    if (cast.length > 0) {
+      remaining = findRemaining(cast, pairs);
+    }
 
     if (this.props.pairs.length !== 8) {
       return (
@@ -226,6 +232,7 @@ class SingleCeremony extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.cast);
   return {
     cast: state.cast,
     remaning: findRemaining(state.cast, state.pairs),
