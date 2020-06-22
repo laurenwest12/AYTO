@@ -9,24 +9,24 @@ const GET_PAIRS = 'GET_PAIRS';
 const GET_TRUTHBOOTH = 'GET_TRUTHBOOTH';
 
 //action creators
-const getCastAction = cast => ({
+const getCastAction = (cast) => ({
   type: GET_CAST,
-  cast
+  cast,
 });
 
-const getCeremonyAction = ceremony => ({
+const getCeremonyAction = (ceremony) => ({
   type: GET_CEREMONY,
-  ceremony
+  ceremony,
 });
 
-const getPairsAction = pairs => ({
+const getPairsAction = (pairs) => ({
   type: GET_PAIRS,
-  pairs
+  pairs,
 });
 
-const getTruthBoothAction = truthBooth => ({
+const getTruthBoothAction = (truthBooth) => ({
   type: GET_TRUTHBOOTH,
-  truthBooth
+  truthBooth,
 });
 
 //reducers
@@ -68,29 +68,29 @@ const truthBooth = (state = {}, action) => {
 
 //thunks
 export const getCastThunk = () => {
-  return dispatch => {
+  return (dispatch) => {
     axios.get('/api/cast').then(({ data }) => dispatch(getCastAction(data)));
   };
 };
 
-export const updateMatchesThunk = cast => {
-  return dispatch => {
+export const updateMatchesThunk = (cast) => {
+  return (dispatch) => {
     axios
       .put('/api/cast', cast)
       .then(({ data }) => dispatch(getCastAction(data)));
   };
 };
 
-export const getCeremonyThunk = number => {
-  return dispatch => {
+export const getCeremonyThunk = (number) => {
+  return (dispatch) => {
     axios
       .get(`/api/ceremonies/${number}`)
       .then(({ data }) => dispatch(getCeremonyAction(data)));
   };
 };
 
-export const getPairsThunk = number => {
-  return dispatch => {
+export const getPairsThunk = (number) => {
+  return (dispatch) => {
     axios
       .get(`/api/ceremonies/${number}/pairs`)
       .then(({ data }) => dispatch(getPairsAction(data)));
@@ -98,7 +98,7 @@ export const getPairsThunk = number => {
 };
 
 export const postPairsThunk = (number, pairs) => {
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(`/api/ceremonies/${number}/pairs`, pairs)
       .then(({ data }) => dispatch(getPairsAction(data)));
@@ -106,15 +106,15 @@ export const postPairsThunk = (number, pairs) => {
 };
 
 export const postBeamsThunk = (number, beams) => {
-  return dispatch => {
+  return (dispatch) => {
     axios
       .put(`/api/ceremonies/${number}`, beams)
       .then(({ data }) => dispatch(getCeremonyAction(data)));
   };
 };
 
-export const getTruthBoothThunk = number => {
-  return dispatch => {
+export const getTruthBoothThunk = (number) => {
+  return (dispatch) => {
     axios
       .get(`/api/truthbooths/${number}`)
       .then(({ data }) => dispatch(getTruthBoothAction(data)));
@@ -126,9 +126,9 @@ export const postTruthBoothThunk = (number, pair1, pair2, match) => {
     number,
     pair1,
     pair2,
-    match
+    match,
   };
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(`/api/truthbooths/${number}/pairs`, obj)
       .then(({ data }) => dispatch(getTruthBoothAction(data)));
@@ -140,7 +140,7 @@ const reducer = combineReducers({
   cast,
   ceremony,
   pairs,
-  truthBooth
+  truthBooth,
 });
 
 const store = createStore(reducer, applyMiddleware(thunkMiddleware));

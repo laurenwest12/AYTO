@@ -5,10 +5,10 @@ import {
   getCastThunk,
   postPairsThunk,
   postBeamsThunk,
-  getPairsThunk
+  getPairsThunk,
 } from './store';
 
-const shuffle = array => {
+const shuffle = (array) => {
   const copy = array.slice();
   return copy.sort(() => Math.random() - 0.5);
 };
@@ -20,7 +20,7 @@ const findRemaining = (arr1, arr2) => {
     return acc;
   }, []);
 
-  return arr1.filter(item => paired.indexOf(item.id) === -1);
+  return arr1.filter((item) => paired.indexOf(item.id) === -1);
 };
 
 class SingleCeremony extends Component {
@@ -33,7 +33,7 @@ class SingleCeremony extends Component {
       beams: null,
       pair1: {},
       pair2: {},
-      viewBeams: false
+      viewBeams: false,
     };
   }
 
@@ -42,7 +42,7 @@ class SingleCeremony extends Component {
     this.props.getPairs(number);
     this.props.getCeremony(number);
     this.setState({
-      number
+      number,
     });
   };
 
@@ -54,14 +54,14 @@ class SingleCeremony extends Component {
       const current = shuffled[0];
       this.setState({
         number,
-        pair1: current
+        pair1: current,
       });
       if (this.props.pairs.length === 8) {
         const beams = this.props.pairs.filter(
-          pair => pair.pair1.matchId === pair.pair2.id
+          (pair) => pair.pair1.matchId === pair.pair2.id
         );
         this.setState({
-          beams: beams.length
+          beams: beams.length,
         });
         this.props.postBeams(number, this.state);
       }
@@ -72,7 +72,7 @@ class SingleCeremony extends Component {
     this.setState({ pair2: member });
   };
 
-  handleSubmit = evt => {
+  handleSubmit = (evt) => {
     evt.preventDefault();
     this.props.postPair(this.state.number, this.state);
     window.location.reload();
@@ -80,19 +80,21 @@ class SingleCeremony extends Component {
 
   viewPairs = () => {
     this.setState({
-      viewBeams: false
+      viewBeams: false,
     });
   };
 
   viewBeams = () => {
     this.setState({
-      viewBeams: true
+      viewBeams: true,
     });
   };
 
   render() {
     const { cast, pairs } = this.props;
     const remaining = findRemaining(cast, pairs);
+
+    console.log(cast);
 
     if (this.props.pairs.length !== 8) {
       return (
@@ -126,11 +128,11 @@ class SingleCeremony extends Component {
               <div className="remainingContainer">
                 {this.state.pair1 &&
                   remaining.map(
-                    member =>
+                    (member) =>
                       member.id !== this.state.pair1.id && (
                         <div
                           key={member.key}
-                          onClick={e => this.handleChange(e, member)}
+                          onClick={(e) => this.handleChange(e, member)}
                           member={member}
                           value={member.id}
                           className="remainingMember"
@@ -181,7 +183,7 @@ class SingleCeremony extends Component {
       return (
         <div className="container">
           <div className="finishedMatchUp">
-            {this.props.pairs.map(pair => (
+            {this.props.pairs.map((pair) => (
               <div className="remainingPair" key={pair.id}>
                 <div className="remainingMember">
                   <img src={pair.pair1.imgUrl} className="remainingImage" />
@@ -223,27 +225,24 @@ class SingleCeremony extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     cast: state.cast,
     remaning: findRemaining(state.cast, state.pairs),
     pairs: state.pairs,
     beams: state.beams,
-    ceremony: state.ceremony
+    ceremony: state.ceremony,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getCeremony: number => dispatch(getCeremonyThunk(number)),
+    getCeremony: (number) => dispatch(getCeremonyThunk(number)),
     getCast: () => dispatch(getCastThunk()),
-    getPairs: number => dispatch(getPairsThunk(number)),
+    getPairs: (number) => dispatch(getPairsThunk(number)),
     postPair: (number, pair) => dispatch(postPairsThunk(number, pair)),
-    postBeams: (number, beams) => dispatch(postBeamsThunk(number, beams))
+    postBeams: (number, beams) => dispatch(postBeamsThunk(number, beams)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SingleCeremony);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleCeremony);
