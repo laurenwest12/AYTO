@@ -4,14 +4,14 @@ const db = require('../db');
 const TruthBooth = db.define('truthBooth', {
   match: {
     type: Sequelize.BOOLEAN,
-    defaultValue: null
+    defaultValue: null,
   },
   pair1: {
-    type: Sequelize.JSON
+    type: Sequelize.JSON,
   },
   pair2: {
-    type: Sequelize.JSON
-  }
+    type: Sequelize.JSON,
+  },
 });
 
 module.exports = TruthBooth;

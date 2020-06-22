@@ -37,7 +37,7 @@ module.exports = (app) => {
   app.get('/api/ceremonies/:number/pairs', async (req, res) => {
     const ceremony = await Ceremony.find({ number: req.params.number });
     const pairs = ceremony._pairs;
-    res.send(pairs);
+    res.json(pairs);
   });
 
   app.post('/api/ceremonies/:number/pairs', async (req, res) => {
