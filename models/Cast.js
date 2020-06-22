@@ -8,7 +8,7 @@ const Cast = new Schema({
     default:
       'http://mtv.mtvnimages.com/apps/series-art/are-you-the-one/Dr.Frankie.jpg?quality=0.85&width=548&height=548&crop=true',
   },
-  _match: { type: Schema.Types.ObjectId, ref: 'cast', default: null },
+  _match: { type: Schema.Types.ObjectId, ref: 'Cast', default: null },
 });
 
-mongoose.model('cast', Cast);
+mongoose.model('Cast', Cast);

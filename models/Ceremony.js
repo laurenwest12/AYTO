@@ -7,4 +7,4 @@ const Ceremony = new Schema({
   _pairs: [{ type: Schema.Types.ObjectId, ref: 'Pair' }],
 });
 
-mongoose.model('ceremony', Ceremony);
+mongoose.model('Ceremony', Ceremony);
