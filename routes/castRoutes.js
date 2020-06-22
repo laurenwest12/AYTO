@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Cast = mongoose.model('cast');
+const Cast = mongoose.model('Cast');
 
 module.exports = (app) => {
   app.get('/api/cast', (req, res) => {
