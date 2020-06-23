@@ -16,12 +16,11 @@ const shuffle = (array) => {
 const findRemaining = (arr1, arr2) => {
   if (arr2.length) {
     const paired = arr2.reduce((acc, val) => {
-      acc.push(val.pair1.id);
-      acc.push(val.pair2.id);
+      acc.push(val._pair1);
+      acc.push(val._pair2);
       return acc;
     }, []);
-
-    return arr1.filter((item) => paired.indexOf(item.id) === -1);
+    return arr1.filter((item) => paired.indexOf(item._id) === -1);
   } else {
     return arr1;
   }
@@ -80,7 +79,7 @@ class SingleCeremony extends Component {
   handleSubmit = (evt) => {
     evt.preventDefault();
     this.props.postPair(this.state.number, this.state);
-    // window.location.reload();
+    window.location.reload();
   };
 
   viewPairs = () => {
@@ -98,7 +97,6 @@ class SingleCeremony extends Component {
   render() {
     const { cast, pairs } = this.props;
     const remaining = findRemaining(cast, pairs);
-
     return (
       <div className="container">
         <div className="matchUpContainer">

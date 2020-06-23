@@ -35,13 +35,12 @@ module.exports = (app) => {
   });
 
   app.get('/api/ceremonies/:number/pairs', async (req, res) => {
-    const ceremony = await Ceremony.find({ number: req.params.number });
-    const pairs = ceremony._pairs;
+    const ceremony = await Ceremony.findOne({ number: req.params.number });
+    const pairs = await Pair.find({ _id: ceremony._pairs });
     res.json(pairs);
   });
 
   app.post('/api/ceremonies/:number/pairs', async (req, res) => {
-    console.log(req.body);
     const { pair1, pair2 } = req.body;
     let match;
 
@@ -53,7 +52,14 @@ module.exports = (app) => {
       match,
       _ceremony: await Ceremony.findOne({ number: req.params.number }),
     });
+
     pair.save();
+
+    await Ceremony.updateOne(
+      { number: req.params.number },
+      { $push: { _pairs: pair._id } }
+    );
+
     res.send(pair);
   });
 };
