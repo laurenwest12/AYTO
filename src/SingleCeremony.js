@@ -14,13 +14,17 @@ const shuffle = (array) => {
 };
 
 const findRemaining = (arr1, arr2) => {
-  const paired = arr2.reduce((acc, val) => {
-    acc.push(val.pair1.id);
-    acc.push(val.pair2.id);
-    return acc;
-  }, []);
+  if (arr2.length) {
+    const paired = arr2.reduce((acc, val) => {
+      acc.push(val.pair1.id);
+      acc.push(val.pair2.id);
+      return acc;
+    }, []);
 
-  return arr1.filter((item) => paired.indexOf(item.id) === -1);
+    return arr1.filter((item) => paired.indexOf(item.id) === -1);
+  } else {
+    return arr1;
+  }
 };
 
 class SingleCeremony extends Component {
@@ -39,35 +43,35 @@ class SingleCeremony extends Component {
 
   componentDidMount = () => {
     this.props.getCast();
-    // const { number } = this.props.match.params;
-    // this.props.getPairs(number);
-    // this.props.getCeremony(number);
-    // this.setState({
-    //   number,
-    // });
+    const { number } = this.props.match.params;
+    this.props.getPairs(number);
+    this.props.getCeremony(number);
+    this.setState({
+      number,
+    });
   };
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps !== this.props) {
-  //     const { number } = this.props.match.params;
-  //     const remaining = findRemaining(this.props.cast, this.props.pairs);
-  //     const shuffled = shuffle(remaining);
-  //     const current = shuffled[0];
-  //     this.setState({
-  //       number,
-  //       pair1: current,
-  //     });
-  //     if (this.props.pairs.length === 8) {
-  //       const beams = this.props.pairs.filter(
-  //         (pair) => pair.pair1.matchId === pair.pair2.id
-  //       );
-  //       this.setState({
-  //         beams: beams.length,
-  //       });
-  //       this.props.postBeams(number, this.state);
-  //     }
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      const { number } = this.props.match.params;
+      const remaining = findRemaining(this.props.cast, this.props.pairs);
+      const shuffled = shuffle(remaining);
+      const current = shuffled[0];
+      this.setState({
+        number,
+        pair1: current,
+      });
+      if (this.props.pairs.length === 8) {
+        const beams = this.props.pairs.filter(
+          (pair) => pair.pair1.matchId === pair.pair2.id
+        );
+        this.setState({
+          beams: beams.length,
+        });
+        this.props.postBeams(number, this.state);
+      }
+    }
+  }
 
   handleChange = ({ target }, member) => {
     this.setState({ pair2: member });
@@ -92,10 +96,9 @@ class SingleCeremony extends Component {
   };
 
   render() {
-    const { cast } = this.props;
-    // const { cast, pairs } = this.props;
-    // const remaining = findRemaining(cast, pairs);
-    console.log(cast);
+    const { cast, pairs } = this.props;
+    const remaining = findRemaining(cast, pairs);
+
     return (
       <div className="container">
         <div className="matchUpContainer">
@@ -110,7 +113,7 @@ class SingleCeremony extends Component {
                 <label>{this.state.pair1 && this.state.pair1.name}</label>
               </div>
               <div className="singlePair">
-                {this.state.pair2.id && (
+                {this.state.pair2._id && (
                   <img className="pairImage" src={this.state.pair2.imgUrl} />
                 )}
                 <hr />
@@ -126,7 +129,7 @@ class SingleCeremony extends Component {
 
             <div className="remainingContainer">
               {this.state.pair1 &&
-                cast.map(
+                remaining.map(
                   (member) =>
                     member._id !== this.state.pair1._id && (
                       <div
@@ -278,23 +281,23 @@ class SingleCeremony extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ cast, pairs, beams, ceremony }) => {
   return {
-    cast: state.cast,
-    // remaning: findRemaining(state.cast, state.pairs),
-    pairs: state.pairs,
-    beams: state.beams,
-    ceremony: state.ceremony,
+    cast,
+    remaning: findRemaining(cast, pairs),
+    pairs,
+    beams,
+    ceremony,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // getCeremony: (number) => dispatch(getCeremonyThunk(number)),
+    getCeremony: (number) => dispatch(getCeremonyThunk(number)),
     getCast: () => dispatch(getCastThunk()),
-    // getPairs: (number) => dispatch(getPairsThunk(number)),
-    // postPair: (number, pair) => dispatch(postPairsThunk(number, pair)),
-    // postBeams: (number, beams) => dispatch(postBeamsThunk(number, beams)),
+    getPairs: (number) => dispatch(getPairsThunk(number)),
+    postPair: (number, pair) => dispatch(postPairsThunk(number, pair)),
+    postBeams: (number, beams) => dispatch(postBeamsThunk(number, beams)),
   };
 };
 
