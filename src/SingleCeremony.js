@@ -80,7 +80,7 @@ class SingleCeremony extends Component {
   handleSubmit = (evt) => {
     evt.preventDefault();
     this.props.postPair(this.state.number, this.state);
-    window.location.reload();
+    // window.location.reload();
   };
 
   viewPairs = () => {

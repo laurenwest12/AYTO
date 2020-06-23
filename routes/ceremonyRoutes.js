@@ -41,14 +41,15 @@ module.exports = (app) => {
   });
 
   app.post('/api/ceremonies/:number/pairs', async (req, res) => {
-    const { _pair1, _pair2 } = req.body;
+    console.log(req.body);
+    const { pair1, pair2 } = req.body;
     let match;
 
-    _pair1._match.id === _pair2.id ? (match = true) : (match = false);
+    pair1._match.id === pair2.id ? (match = true) : (match = false);
 
     const pair = new Pair({
-      _pair1: await Cast.findOne({ _id: _pair1._id }),
-      _pair2: await Cast.findOne({ _id: _pair2._id }),
+      _pair1: await Cast.findOne({ _id: pair1._id }),
+      _pair2: await Cast.findOne({ _id: pair2._id }),
       match,
       _ceremony: await Ceremony.findOne({ number: req.params.number }),
     });
