@@ -12,11 +12,6 @@ import SingleTruthBooth from './SingleTruthBooth';
 import { getCastThunk } from './store';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-
   componentDidMount() {
     this.props.getCast();
   }
@@ -39,13 +34,10 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getCast: () => dispatch(getCastThunk())
+    getCast: () => dispatch(getCastThunk()),
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(App);
+export default connect(null, mapDispatchToProps)(App);
