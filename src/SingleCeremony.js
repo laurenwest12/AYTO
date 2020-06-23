@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -60,15 +61,15 @@ class SingleCeremony extends Component {
         number,
         pair1: current,
       });
-      if (this.props.pairs.length === 8) {
-        const beams = this.props.pairs.filter(
-          (pair) => pair.pair1.matchId === pair.pair2.id
-        );
-        this.setState({
-          beams: beams.length,
-        });
-        this.props.postBeams(number, this.state);
-      }
+      // if (this.props.pairs.length === 8) {
+      //   const beams = this.props.pairs.filter(
+      //     (pair) => pair.pair1.matchId === pair.pair2.id
+      //   );
+      //   this.setState({
+      //     beams: beams.length,
+      //   });
+      //   this.props.postBeams(number, this.state);
+      // }
     }
   }
 
@@ -97,185 +98,142 @@ class SingleCeremony extends Component {
   render() {
     const { cast, pairs } = this.props;
     const remaining = findRemaining(cast, pairs);
-    return (
-      <div className="container">
-        <div className="matchUpContainer">
-          <form onSubmit={this.handleSubmit}>
-            <div className="matchUpPair">
-              <div className="singlePair">
-                <img
-                  className="pairImage"
-                  src={this.state.pair1 && this.state.pair1.imgUrl}
-                />
-                <hr />
-                <label>{this.state.pair1 && this.state.pair1.name}</label>
+    if (this.props.pairs.length !== 8) {
+      return (
+        <div className="container">
+          <div className="matchUpContainer">
+            <form onSubmit={this.handleSubmit}>
+              <div className="matchUpPair">
+                <div className="singlePair">
+                  <img
+                    className="pairImage"
+                    src={this.state.pair1 && this.state.pair1.imgUrl}
+                  />
+                  <hr />
+                  <label>{this.state.pair1 && this.state.pair1.name}</label>
+                </div>
+                <div className="singlePair">
+                  {this.state.pair2._id && (
+                    <img className="pairImage" src={this.state.pair2.imgUrl} />
+                  )}
+                  <hr />
+                  <label>{this.state.pair2 && this.state.pair2.name}</label>
+                </div>
               </div>
-              <div className="singlePair">
-                {this.state.pair2._id && (
-                  <img className="pairImage" src={this.state.pair2.imgUrl} />
-                )}
-                <hr />
-                <label>{this.state.pair2 && this.state.pair2.name}</label>
-              </div>
-            </div>
 
-            <div className="button-container">
-              <button type="submit" className="lockedInButton">
-                lock in
+              <div className="button-container">
+                <button type="submit" className="lockedInButton">
+                  lock in
+                </button>
+              </div>
+
+              <div className="remainingContainer">
+                {this.state.pair1 &&
+                  remaining.map(
+                    (member) =>
+                      member._id !== this.state.pair1._id && (
+                        <div
+                          key={member._id}
+                          onClick={(e) => this.handleChange(e, member)}
+                          member={member}
+                          value={member._id}
+                          className="remainingMember"
+                        >
+                          <img src={member.imgUrl} className="remainingImage" />
+                          <hr />
+                          {member.name}
+                        </div>
+                      )
+                  )}
+              </div>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    if (this.props.pairs.length === 8 && this.state.viewBeams) {
+      return (
+        <div className="container">
+          <div className="beamsMatchUp">
+            {this.props.ceremony.beams}
+            <div className="matchup-buttons">
+              <button
+                type="button"
+                onClick={this.viewPairs}
+                className="lockedInButton"
+              >
+                View Pairs
               </button>
             </div>
 
-            <div className="remainingContainer">
-              {this.state.pair1 &&
-                remaining.map(
-                  (member) =>
-                    member._id !== this.state.pair1._id && (
-                      <div
-                        key={member._id}
-                        onClick={(e) => this.handleChange(e, member)}
-                        member={member}
-                        value={member._id}
-                        className="remainingMember"
-                      >
-                        <img src={member.imgUrl} className="remainingImage" />
-                        <hr />
-                        {member.name}
-                      </div>
-                    )
-                )}
+            <div className="matchup-buttons">
+              <button
+                type="button"
+                onClick={this.viewBeams}
+                className="lockedInButton"
+              >
+                View Beams
+              </button>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
 
-    //   if (this.props.pairs.length !== 8) {
-    //     return (
-    //       <div className="container">
-    //         <div className="matchUpContainer">
-    //           <form onSubmit={this.handleSubmit}>
-    //             <div className="matchUpPair">
-    //               <div className="singlePair">
-    //                 <img
-    //                   className="pairImage"
-    //                   src={this.state.pair1 && this.state.pair1.imgUrl}
-    //                 />
-    //                 <hr />
-    //                 <label>{this.state.pair1 && this.state.pair1.name}</label>
-    //               </div>
-    //               <div className="singlePair">
-    //                 {this.state.pair2.id && (
-    //                   <img className="pairImage" src={this.state.pair2.imgUrl} />
-    //                 )}
-    //                 <hr />
-    //                 <label>{this.state.pair2 && this.state.pair2.name}</label>
-    //               </div>
-    //             </div>
+    if (this.props.pairs.length === 8 && !this.state.viewBeams) {
+      return (
+        <div className="container">
+          <div className="finishedMatchUp">
+            {this.props.pairs.map((pair) => {
+              const { _pair1, _pair2 } = pair;
+              const pair1 = this.props.cast.filter(
+                (member) => member._id === _pair1
+              )[0];
+              const pair2 = this.props.cast.filter(
+                (member) => member._id === _pair2
+              )[0];
 
-    //             <div className="button-container">
-    //               <button type="submit" className="lockedInButton">
-    //                 lock in
-    //               </button>
-    //             </div>
+              return (
+                <div className="remainingPair" key={pair._id}>
+                  <div className="remainingMember">
+                    <img src={pair1.imgUrl} className="remainingImage" />
+                    <hr />
+                    {pair1.name}
+                  </div>
 
-    //             <div className="remainingContainer">
-    //               {this.state.pair1 &&
-    //                 remaining.map(
-    //                   (member) =>
-    //                     member.id !== this.state.pair1.id && (
-    //                       <div
-    //                         key={member.key}
-    //                         onClick={(e) => this.handleChange(e, member)}
-    //                         member={member}
-    //                         value={member.id}
-    //                         className="remainingMember"
-    //                       >
-    //                         <img src={member.imgUrl} className="remainingImage" />
-    //                         <hr />
-    //                         {member.name}
-    //                       </div>
-    //                     )
-    //                 )}
-    //             </div>
-    //           </form>
-    //         </div>
-    //       </div>
-    //     );
-    //   }
+                  <div className="remainingMember">
+                    <img src={pair2.imgUrl} className="remainingImage" />
+                    <hr />
+                    {pair2.name}
+                  </div>
+                </div>
+              );
+            })}
 
-    //   if (this.props.pairs.length === 8 && this.state.viewBeams) {
-    //     return (
-    //       <div className="container">
-    //         <div className="beamsMatchUp">
-    //           {this.props.ceremony.beams}
-    //           <div className="matchup-buttons">
-    //             <button
-    //               type="button"
-    //               onClick={this.viewPairs}
-    //               className="lockedInButton"
-    //             >
-    //               View Pairs
-    //             </button>
-    //           </div>
+            <div className="matchup-buttons">
+              <button
+                type="button"
+                onClick={this.viewPairs}
+                className="lockedInButton"
+              >
+                View Pairs
+              </button>
+            </div>
 
-    //           <div className="matchup-buttons">
-    //             <button
-    //               type="button"
-    //               onClick={this.viewBeams}
-    //               className="lockedInButton"
-    //             >
-    //               View Beams
-    //             </button>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     );
-    //   }
-
-    //   if (this.props.pairs.length === 8 && !this.state.viewBeams) {
-    //     return (
-    //       <div className="container">
-    //         <div className="finishedMatchUp">
-    //           {this.props.pairs.map((pair) => (
-    //             <div className="remainingPair" key={pair.id}>
-    //               <div className="remainingMember">
-    //                 <img src={pair.pair1.imgUrl} className="remainingImage" />
-    //                 <hr />
-    //                 {pair.pair1.name}
-    //               </div>
-
-    //               <div className="remainingMember">
-    //                 <img src={pair.pair2.imgUrl} className="remainingImage" />
-    //                 <hr />
-    //                 {pair.pair2.name}
-    //               </div>
-    //             </div>
-    //           ))}
-
-    //           <div className="matchup-buttons">
-    //             <button
-    //               type="button"
-    //               onClick={this.viewPairs}
-    //               className="lockedInButton"
-    //             >
-    //               View Pairs
-    //             </button>
-    //           </div>
-
-    //           <div className="matchup-buttons">
-    //             <button
-    //               type="button"
-    //               onClick={this.viewBeams}
-    //               className="lockedInButton"
-    //             >
-    //               View Beams
-    //             </button>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     );
-    //   }
-    // }
+            <div className="matchup-buttons">
+              <button
+                type="button"
+                onClick={this.viewBeams}
+                className="lockedInButton"
+              >
+                View Beams
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
