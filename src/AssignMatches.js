@@ -17,8 +17,8 @@ class AssignMatches extends Component {
   }
 
   handleChange = ({ target }) => {
-    const cast = this.state.cast.slice();
-    cast[target.name].matchId = target.value;
+    const cast = this.props.cast.slice();
+    cast[target.name]._match = target.value;
     this.setState({
       cast: cast,
     });
@@ -53,8 +53,8 @@ class AssignMatches extends Component {
                       {matches.length &&
                         matches.map(
                           (match) =>
-                            match.id !== member.id && (
-                              <option value={match.id} key={match.name}>
+                            match._id !== member._id && (
+                              <option value={match._id} key={match._id}>
                                 {match.name}
                               </option>
                             )

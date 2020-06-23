@@ -26,7 +26,11 @@ module.exports = (app) => {
 
   app.put('/api/cast', async (req, res) => {
     const cast = await req.body.map(async (member) => {
-      await Cast.updateOne({ _id: member._id }, member);
+      console.log(member._match);
+      await Cast.updateOne(
+        { _id: member._id },
+        { $set: { _match: member._match } }
+      );
     });
     res.send(cast);
   });
