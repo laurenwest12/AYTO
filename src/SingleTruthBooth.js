@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTruthBoothThunk, postTruthBoothThunk } from './store';
@@ -18,14 +19,16 @@ class SingleTruthBooth extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    // const { truthBooth } = this.props;
-    // if (prevProps !== this.props) {
-    //   this.setState({
-    //     match: truthBooth.match,
-    //     pair1: truthBooth.pair1,
-    //     pair2: truthBooth.pair2,
-    //   });
-    // }
+    const { truthBooth } = this.props;
+    if (prevProps !== this.props) {
+      if (truthBooth) {
+        this.setState({
+          match: truthBooth.match,
+          pair1: truthBooth._pair1,
+          pair2: truthBooth._pair2,
+        });
+      }
+    }
   };
 
   handleChange = ({ target }, member) => {
@@ -54,9 +57,7 @@ class SingleTruthBooth extends Component {
 
     const match = this.state.pair1._match === this.state.pair2._id;
 
-    setTimeout(function () {
-      postTruthBooth(number, pair1, pair2, match);
-    }, 0);
+    this.props.postTruthBooth(number, pair1, pair2, match);
   };
 
   render() {
@@ -117,32 +118,42 @@ class SingleTruthBooth extends Component {
       );
     }
 
-    // if (this.state.match !== null) {
-    //   if (truthBooth.match === true) {
-    //     const { pair1, pair2 } = this.state;
-    //     return (
-    //       <div className="matchResultContainer">
-    //         <div className="matchResultImageContainer">
-    //           <img src={pair1.imgUrl} className="matchResultImage" />
-    //           <img src={pair2.imgUrl} className="matchResultImage" />
-    //         </div>
-    //         <div className="matchResult">PERFECT MATCH!</div>
-    //       </div>
-    //     );
-    //   }
-    //   if (truthBooth.match === false) {
-    //     const { pair1, pair2 } = this.state;
-    //     return (
-    //       <div className="matchResultContainer">
-    //         <div className="matchResultImageContainer">
-    //           <img src={pair1.imgUrl} className="matchResultImage" />
-    //           <img src={pair2.imgUrl} className="matchResultImage" />
-    //         </div>
-    //         <div className="noMatchResult">NO MATCH!</div>
-    //       </div>
-    //     );
-    //   }
-    // }
+    if (this.state.match !== null) {
+      if (truthBooth.match) {
+        const { pair1, pair2 } = this.state;
+        const _pair1 =
+          cast.length && cast.find((member) => member._id === pair1);
+        const _pair2 =
+          cast.length && cast.find((member) => member._id === pair2);
+
+        return (
+          <div className="matchResultContainer">
+            <div className="matchResultImageContainer">
+              <img src={_pair1.imgUrl} className="matchResultImage" />
+              <img src={_pair2.imgUrl} className="matchResultImage" />
+            </div>
+            <div className="matchResult">PERFECT MATCH!</div>
+          </div>
+        );
+      }
+      if (!truthBooth.match) {
+        const { pair1, pair2 } = this.state;
+        const _pair1 =
+          cast.length && cast.find((member) => member._id === pair1);
+        const _pair2 =
+          cast.length && cast.find((member) => member._id === pair2);
+
+        return (
+          <div className="matchResultContainer">
+            <div className="matchResultImageContainer">
+              <img src={_pair1.imgUrl} className="matchResultImage" />
+              <img src={_pair2.imgUrl} className="matchResultImage" />
+            </div>
+            <div className="noMatchResult">NO MATCH!</div>
+          </div>
+        );
+      }
+    }
   }
 }
 

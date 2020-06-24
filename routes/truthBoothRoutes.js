@@ -10,20 +10,6 @@ module.exports = (app) => {
     res.json(truthbooth);
   });
 
-  // app.post('/api/truthbooths/', async (req, res) => {
-  //   const { number, _pair1, _pair2 } = req.body;
-  //   const match = _pair1.match === _pair2._id;
-  //   const truthbooth = new TruthBooth({
-  //     number,
-  //     match,
-  //     _pair1,
-  //     _pair2,
-  //   });
-
-  //   await truthbooth.save();
-  //   res.send(truthbooth);
-  // });
-
   app.post('/api/truthbooths/:number/pairs', async (req, res) => {
     const { pair1, pair2, match } = req.body;
 
