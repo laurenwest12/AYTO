@@ -18,15 +18,14 @@ class SingleTruthBooth extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    const { truthBooth } = this.props;
-
-    if (prevProps !== this.props) {
-      this.setState({
-        match: truthBooth.match,
-        pair1: truthBooth.pair1,
-        pair2: truthBooth.pair2,
-      });
-    }
+    // const { truthBooth } = this.props;
+    // if (prevProps !== this.props) {
+    //   this.setState({
+    //     match: truthBooth.match,
+    //     pair1: truthBooth.pair1,
+    //     pair2: truthBooth.pair2,
+    //   });
+    // }
   };
 
   handleChange = ({ target }, member) => {
@@ -69,87 +68,91 @@ class SingleTruthBooth extends Component {
   render() {
     const { cast, truthBooth } = this.props;
 
-    if (this.state.match === null) {
-      return (
-        <div className="container">
-          <div className="matchUpContainer">
-            <form onSubmit={this.handleSubmit}>
-              <div className="matchUpPair">
-                <div className="singlePair">
-                  {this.state.pair1 && (
-                    <img className="pairImage" src={this.state.pair1.imgUrl} />
-                  )}
-                  <hr />
-                  <label>{this.state.pair1 && this.state.pair1.name}</label>
-                </div>
+    console.log(truthBooth);
 
-                <div className="singlePair">
-                  {this.state.pair2 && (
-                    <img className="pairImage" src={this.state.pair2.imgUrl} />
-                  )}
-                  <hr />
-                  <label>{this.state.pair2 && this.state.pair2.name}</label>
-                </div>
-              </div>
+    return <div>Hello World</div>;
 
-              {this.state.pair2 && (
-                <div className="button-container">
-                  <button type="submit" className="lockedInButton">
-                    lock in
-                  </button>
-                </div>
-              )}
+    // if (this.state.match === null) {
+    //   return (
+    //     <div className="container">
+    //       <div className="matchUpContainer">
+    //         <form onSubmit={this.handleSubmit}>
+    //           <div className="matchUpPair">
+    //             <div className="singlePair">
+    //               {this.state.pair1 && (
+    //                 <img className="pairImage" src={this.state.pair1.imgUrl} />
+    //               )}
+    //               <hr />
+    //               <label>{this.state.pair1 && this.state.pair1.name}</label>
+    //             </div>
 
-              <label />
-              <label />
-              <div className="remainingContainer">
-                {cast.length &&
-                  cast.map((member) => (
-                    <div
-                      key={member.key}
-                      onClick={(e) => this.handleChange(e, member)}
-                      member={member}
-                      value={member.id}
-                      className="remainingMember"
-                    >
-                      <img src={member.imgUrl} className="remainingImage" />
-                      <hr />
-                      {member.name}
-                    </div>
-                  ))}
-              </div>
-            </form>
-          </div>
-        </div>
-      );
-    }
+    //             <div className="singlePair">
+    //               {this.state.pair2 && (
+    //                 <img className="pairImage" src={this.state.pair2.imgUrl} />
+    //               )}
+    //               <hr />
+    //               <label>{this.state.pair2 && this.state.pair2.name}</label>
+    //             </div>
+    //           </div>
 
-    if (this.state.match !== null) {
-      if (truthBooth.match === true) {
-        const { pair1, pair2 } = this.state;
-        return (
-          <div className="matchResultContainer">
-            <div className="matchResultImageContainer">
-              <img src={pair1.imgUrl} className="matchResultImage" />
-              <img src={pair2.imgUrl} className="matchResultImage" />
-            </div>
-            <div className="matchResult">PERFECT MATCH!</div>
-          </div>
-        );
-      }
-      if (truthBooth.match === false) {
-        const { pair1, pair2 } = this.state;
-        return (
-          <div className="matchResultContainer">
-            <div className="matchResultImageContainer">
-              <img src={pair1.imgUrl} className="matchResultImage" />
-              <img src={pair2.imgUrl} className="matchResultImage" />
-            </div>
-            <div className="noMatchResult">NO MATCH!</div>
-          </div>
-        );
-      }
-    }
+    //           {this.state.pair2 && (
+    //             <div className="button-container">
+    //               <button type="submit" className="lockedInButton">
+    //                 lock in
+    //               </button>
+    //             </div>
+    //           )}
+
+    //           <label />
+    //           <label />
+    //           <div className="remainingContainer">
+    //             {cast.length &&
+    //               cast.map((member) => (
+    //                 <div
+    //                   key={member.key}
+    //                   onClick={(e) => this.handleChange(e, member)}
+    //                   member={member}
+    //                   value={member.id}
+    //                   className="remainingMember"
+    //                 >
+    //                   <img src={member.imgUrl} className="remainingImage" />
+    //                   <hr />
+    //                   {member.name}
+    //                 </div>
+    //               ))}
+    //           </div>
+    //         </form>
+    //       </div>
+    //     </div>
+    //   );
+    // }
+
+    // if (this.state.match !== null) {
+    //   if (truthBooth.match === true) {
+    //     const { pair1, pair2 } = this.state;
+    //     return (
+    //       <div className="matchResultContainer">
+    //         <div className="matchResultImageContainer">
+    //           <img src={pair1.imgUrl} className="matchResultImage" />
+    //           <img src={pair2.imgUrl} className="matchResultImage" />
+    //         </div>
+    //         <div className="matchResult">PERFECT MATCH!</div>
+    //       </div>
+    //     );
+    //   }
+    //   if (truthBooth.match === false) {
+    //     const { pair1, pair2 } = this.state;
+    //     return (
+    //       <div className="matchResultContainer">
+    //         <div className="matchResultImageContainer">
+    //           <img src={pair1.imgUrl} className="matchResultImage" />
+    //           <img src={pair2.imgUrl} className="matchResultImage" />
+    //         </div>
+    //         <div className="noMatchResult">NO MATCH!</div>
+    //       </div>
+    //     );
+    //   }
+    // }
   }
 }
 

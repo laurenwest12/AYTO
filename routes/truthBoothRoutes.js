@@ -6,7 +6,7 @@ const Cast = mongoose.model('Cast');
 
 module.exports = (app) => {
   app.get('/api/truthbooths/:number', async (req, res) => {
-    const truthbooth = TruthBooth.findOne({ number: req.params.number });
+    const truthbooth = await TruthBooth.findOne({ number: req.params.number });
     res.json(truthbooth);
   });
 
