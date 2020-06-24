@@ -107,10 +107,10 @@ export const postPairsThunk = (number, pairs) => {
   };
 };
 
-export const postBeamsThunk = (number, beams) => {
+export const postBeamsThunk = (number) => {
   return (dispatch) => {
     axios
-      .put(`/api/ceremonies/${number}`, beams)
+      .put(`/api/ceremonies/${number}`)
       .then(({ data }) => dispatch(getCeremonyAction(data)));
   };
 };

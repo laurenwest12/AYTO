@@ -37,7 +37,7 @@ class SingleCeremony extends Component {
       beams: null,
       pair1: {},
       pair2: {},
-      viewBeams: false,
+      viewBeams: true,
     };
   }
 
@@ -61,15 +61,6 @@ class SingleCeremony extends Component {
         number,
         pair1: current,
       });
-      // if (this.props.pairs.length === 8) {
-      //   const beams = this.props.pairs.filter(
-      //     (pair) => pair.pair1.matchId === pair.pair2.id
-      //   );
-      //   this.setState({
-      //     beams: beams.length,
-      //   });
-      //   this.props.postBeams(number, this.state);
-      // }
     }
   }
 
@@ -80,6 +71,11 @@ class SingleCeremony extends Component {
   handleSubmit = (evt) => {
     evt.preventDefault();
     this.props.postPair(this.state.number, this.state);
+
+    if (this.props.pairs.length === 7) {
+      this.props.postBeams(this.state.number);
+    }
+
     window.location.reload();
   };
 
@@ -253,7 +249,7 @@ const mapDispatchToProps = (dispatch) => {
     getCast: () => dispatch(getCastThunk()),
     getPairs: (number) => dispatch(getPairsThunk(number)),
     postPair: (number, pair) => dispatch(postPairsThunk(number, pair)),
-    postBeams: (number, beams) => dispatch(postBeamsThunk(number, beams)),
+    postBeams: (number) => dispatch(postBeamsThunk(number)),
   };
 };
 

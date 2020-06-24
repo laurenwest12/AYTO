@@ -26,11 +26,12 @@ module.exports = (app) => {
     res.send(ceremony);
   });
 
+  //update the number of beams for a ceremony
   app.put('/api/ceremonies/:number', async (req, res) => {
-    const ceremony = await Ceremony.updateOne(
-      { number: req.params.number },
-      req.body
-    );
+    const ceremony = await Ceremony.findOne({ number: req.params.number });
+    const pairs = await Pair.find({ _ceremony: ceremony._id });
+    const beams = pairs.filter(({ match }) => match).length;
+    await Ceremony.updateOne({ number: req.params.number }, { beams });
     res.send(ceremony);
   });
 
@@ -44,7 +45,7 @@ module.exports = (app) => {
     const { pair1, pair2 } = req.body;
     let match;
 
-    pair1._match.id === pair2.id ? (match = true) : (match = false);
+    pair1._match === pair2._id ? (match = true) : (match = false);
 
     const pair = new Pair({
       _pair1: await Cast.findOne({ _id: pair1._id }),
