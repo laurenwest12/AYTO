@@ -37,7 +37,7 @@ class SingleCeremony extends Component {
       beams: null,
       pair1: {},
       pair2: {},
-      viewBeams: true,
+      viewBeams: false,
     };
   }
 

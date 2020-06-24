@@ -6,10 +6,9 @@ class SingleTruthBooth extends Component {
   constructor() {
     super();
     this.state = {
-      number: null,
       pair1: null,
       pair2: null,
-      match: null
+      match: null,
     };
   }
 
@@ -18,16 +17,14 @@ class SingleTruthBooth extends Component {
     this.props.getTruthBooth(number);
   };
 
-  componentDidUpdate = prevProps => {
-    const { number } = this.props.match.params;
+  componentDidUpdate = (prevProps) => {
     const { truthBooth } = this.props;
 
     if (prevProps !== this.props) {
       this.setState({
-        number,
         match: truthBooth.match,
         pair1: truthBooth.pair1,
-        pair2: truthBooth.pair2
+        pair2: truthBooth.pair2,
       });
     }
   };
@@ -35,16 +32,16 @@ class SingleTruthBooth extends Component {
   handleChange = ({ target }, member) => {
     if (this.state.pair1 === null) {
       this.setState({
-        pair1: member
+        pair1: member,
       });
     } else {
       this.setState({
-        pair2: member
+        pair2: member,
       });
     }
   };
 
-  handleSubmit = evt => {
+  handleSubmit = (evt) => {
     //RANDOM NUMBER
     // function randomIntFromInterval(min, max) {
     //   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -52,18 +49,21 @@ class SingleTruthBooth extends Component {
     // const num = randomIntFromInterval(5, 10) * 1000;
 
     evt.preventDefault();
-    const { number, pair1, pair2 } = this.state;
+    const { pair1, pair2 } = this.state;
     const { postTruthBooth } = this.props;
+    const { number } = this.props.match.params;
 
     let match;
 
-    this.state.pair1.matchId === this.state.pair2.id
+    this.state.pair1._match === this.state.pair2._id
       ? (match = true)
       : (match = false);
 
-    setTimeout(function() {
+    console.log(this.state);
+
+    setTimeout(function () {
       postTruthBooth(number, pair1, pair2, match);
-    }, 7000);
+    }, 0);
   };
 
   render() {
@@ -104,10 +104,10 @@ class SingleTruthBooth extends Component {
               <label />
               <div className="remainingContainer">
                 {cast.length &&
-                  cast.map(member => (
+                  cast.map((member) => (
                     <div
                       key={member.key}
-                      onClick={e => this.handleChange(e, member)}
+                      onClick={(e) => this.handleChange(e, member)}
                       member={member}
                       value={member.id}
                       className="remainingMember"
@@ -153,22 +153,19 @@ class SingleTruthBooth extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ cast, truthBooth }) => {
   return {
-    cast: state.cast,
-    truthBooth: state.truthBooth
+    cast,
+    truthBooth,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     postTruthBooth: (number, pair1, pair2, match) =>
       dispatch(postTruthBoothThunk(number, pair1, pair2, match)),
-    getTruthBooth: number => dispatch(getTruthBoothThunk(number))
+    getTruthBooth: (number) => dispatch(getTruthBoothThunk(number)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SingleTruthBooth);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTruthBooth);
