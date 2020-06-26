@@ -32,7 +32,9 @@ export default class AllCeremonies extends Component {
               <div key={num} className="singleMatchUp">
                 <img className="matchUpImage" src={this.images[num]} />
                 <br />
-                Match Up {num}
+                <div className="matchUpNumberContainer">
+                  <div className="matchUpNumberText">Match Up {num}</div>
+                </div>
               </div>
             </Link>
           ))}

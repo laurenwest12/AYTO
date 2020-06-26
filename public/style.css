@@ -93,7 +93,26 @@ a:hover {
 }
 
 .singleMatchUp {
-  padding: 15px;
+  position: relative;
+  margin: 15px;
+}
+
+.matchUpNumberContainer {
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  display: table;
+  text-align: center;
+  height: 20%;
+  top: 50%;
+  left: 50%;
+  width: 101%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.matchUpNumberText {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 /*Single Match Up*/
