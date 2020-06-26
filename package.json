@@ -11,14 +11,13 @@
     "babel-preset-stage-2": "^6.24.1",
     "express": "^4.16.4",
     "mongoose": "^5.9.19",
-    "pg": "^7.12.1",
+    "node-sass": "^4.14.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.3",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^5.15.1",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.2.3"
   },
@@ -34,7 +33,7 @@
     "postinstall": "npm run webpack",
     "webpack": "webpack",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
-    "start:dev": "npm run webpack:dev & nodemon server --ignore src/ --ignore dist/"
+    "start:dev": "npm run webpack:dev & nodemon server --ignore dist/"
   },
   "keywords": [],
   "author": "",
